@@ -1,24 +1,15 @@
-# README
+# Home Values Analysis
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Analysis based on zipcode
 
-Things you may want to cover:
+Excel will be generated based on zipcode, e.g. New York zipcode from 10001 -
+11104, including:
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- Home value index (Zestimate valuation)
+- 1 year change
+- 1 year forecast
+- Median listing price
+- Median list price / sq ft
+- Median sale price
+- Rent list price
+- Rent list price / sq ft
