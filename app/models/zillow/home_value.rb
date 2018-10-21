@@ -25,5 +25,13 @@ module Zillow
     def fail!
       self.status = STATUS_FAIL
     end
+
+    def map_link
+      "https://www.google.com/maps/place/#{area.city.state}+#{area.zipcode}"
+    end
+
+    def link
+      "https://www.zillow.com/#{area.city.slug}-#{area.city.state}-#{area.zipcode}/home-values/"
+    end
   end
 end

@@ -9,12 +9,14 @@ module Zillow
     ACCEPT_LANGUAGE = "en-US,en;q=0.9,zh-TW;q=0.8,zh;q=0.7"
 
     METRICS = %w[
-        zestimate
-        one_year_change
-        one_year_forecast
-        median_list
-        median_sale
-        median_rent_list
+      link
+      map_link
+      zestimate
+      one_year_change
+      one_year_forecast
+      median_list
+      median_sale
+      median_rent_list
     ]
 
     attr_reader :city, :zipcode, :url, :request, :body, :doc
@@ -25,6 +27,8 @@ module Zillow
           csv << [
             "city",
             "state",
+            "borough",
+            "neighborhood",
             "zipcode",
             *METRICS
           ]
@@ -35,8 +39,10 @@ module Zillow
               csv << [
                 city.name,
                 city.state,
+                area.borough,
+                area.neighborhood,
                 area.zipcode,
-                *METRICS.map { |metric| zillow_home_value[metric] }
+                *METRICS.map { |metric| zillow_home_value.send(metric) }
               ]
             end
           end

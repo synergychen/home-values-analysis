@@ -1,19 +1,17 @@
-CITY_LIST = [
-  { name: "New York", slug: "new-york", state: "ny", zip_start: 10001, zip_end: 11104 }
-]
+require "csv"
 
-CITY_LIST.each do |city_data|
-  city = City.find_or_create_by(
-    name: city_data[:name],
-    slug: city_data[:slug],
-    state: city_data[:state]
+CSV.foreach("data/zipcodes/new-york.csv", headers: true) do |row|
+  city_name = row["city"]
+  state = row["state"]
+  borough = row["borough"]
+  neighborhood = row["neighborhood"]
+  zipcode = row["zipcode"]
+
+  city = City.find_or_create_by(name: city_name, state: state)
+  area = city.areas.find_or_create_by(
+    borough: borough,
+    neighborhood: neighborhood,
+    zipcode: zipcode
   )
-  p "Created / Updated city: #{city.name}"
-  zipcode_start = city_data[:zip_start]
-  zipcode_end = city_data[:zip_end]
-
-  (zipcode_start..zipcode_end).each do |zipcode|
-    city.areas.find_or_create_by(zipcode: zipcode)
-    p "Created / Updated zipcode: #{zipcode}, city: #{city.name}"
-  end
+  p "Created / Updated zipcode: #{area.zipcode}, city: #{city.name}"
 end
