@@ -1,3 +1,5 @@
+require "csv"
+
 module Zillow
   class HomeValuesService
     BASE_URL = "https://www.zillow.com"
@@ -16,6 +18,31 @@ module Zillow
     ]
 
     attr_reader :city, :zipcode, :url, :request, :body, :doc
+
+    class << self
+      def export_csv
+        CSV.open("tmp/zillow-home-values.csv", "wb") do |csv|
+          csv << [
+            "city",
+            "state",
+            "zipcode",
+            *METRICS
+          ]
+          City.all.each do |city|
+            city.areas.each do |area|
+              zillow_home_value = area.zillow_home_value
+              next unless zillow_home_value
+              csv << [
+                city.name,
+                city.state,
+                area.zipcode,
+                *METRICS.map { |metric| zillow_home_value[metric] }
+              ]
+            end
+          end
+        end
+      end
+    end
 
     def initialize(city, state, zipcode)
       raise unless city && zipcode
