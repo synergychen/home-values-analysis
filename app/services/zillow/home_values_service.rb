@@ -6,9 +6,6 @@ module Zillow
     ACCEPT = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng;q=0.8"
     ACCEPT_LANGUAGE = "en-US,en;q=0.9,zh-TW;q=0.8,zh;q=0.7"
 
-    CITY_MAPPINGS = {
-      "new york" => "new-york-ny"
-    }
     METRICS = %w[
         zestimate
         one_year_change
@@ -20,11 +17,9 @@ module Zillow
 
     attr_reader :city, :zipcode, :url, :request, :body, :doc
 
-    def initialize(city, zipcode)
+    def initialize(city, state, zipcode)
       raise unless city && zipcode
-      @city = city
-      @zipcode = zipcode
-      @url = get_url(city, zipcode)
+      @url = get_url(city, state, zipcode)
     end
 
     def perform
@@ -44,7 +39,8 @@ module Zillow
 
     def data
       METRICS.reduce({}) do |h, metric|
-        h[metric] = clean(self.send(metric))
+        data = clean(self.send(metric)) rescue nil
+        h[metric] = data
         h
       end
     end
@@ -55,8 +51,8 @@ module Zillow
 
     private
 
-    def get_url(city, zipcode)
-      "#{BASE_URL}/#{CITY_MAPPINGS[city]}-#{zipcode}/home-values/"
+    def get_url(city, state, zipcode)
+      "#{BASE_URL}/#{city}-#{state}-#{zipcode}/home-values/"
     end
 
     def headers
