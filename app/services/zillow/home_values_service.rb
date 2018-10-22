@@ -11,6 +11,7 @@ module Zillow
     METRICS = %w[
       link
       map_link
+      listing_link
       zestimate
       one_year_change
       one_year_forecast

@@ -30,8 +30,12 @@ module Zillow
       "https://www.google.com/maps/place/#{area.city.state}+#{area.zipcode}"
     end
 
-    def link
+    def analysis_link
       "https://www.zillow.com/#{area.city.slug}-#{area.city.state}-#{area.zipcode}/home-values/"
+    end
+
+    def listing_link
+      "https://www.zillow.com/#{area.borough_slug}-#{area.city.slug}-#{area.city.state}-#{area.zipcode}/"
     end
   end
 end
